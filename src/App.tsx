@@ -1,9 +1,20 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+
+// Pages
+import Home from "./pages/Home";
+import Jobs from "./pages/Jobs";
+import JobDetail from "./pages/JobDetail";
+import Login from "./pages/Auth/Login";
+import SignUp from "./pages/Auth/SignUp";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import WorkerDashboard from "./pages/Dashboard/WorkerDashboard";
+import EmployerDashboard from "./pages/Dashboard/EmployerDashboard";
+import PostJob from "./pages/Dashboard/PostJob";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,8 +26,20 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Public Pages */}
+          <Route path="/" element={<Home />} />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/jobs/:id" element={<JobDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          
+          {/* Dashboard Pages */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/worker" element={<WorkerDashboard />} />
+          <Route path="/dashboard/employer" element={<EmployerDashboard />} />
+          <Route path="/dashboard/post-job" element={<PostJob />} />
+          
+          {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
