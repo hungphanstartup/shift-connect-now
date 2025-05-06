@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
@@ -16,6 +17,7 @@ const initialJobs = [
     hours: 4,
     hourlyRate: 12,
     postedDays: 1,
+    employerId: 1,  // Added employerId
   },
   {
     id: 2,
@@ -27,6 +29,7 @@ const initialJobs = [
     hours: 8,
     hourlyRate: 10,
     postedDays: 2,
+    employerId: 2,  // Added employerId
   },
   {
     id: 3,
@@ -38,6 +41,7 @@ const initialJobs = [
     hours: 6,
     hourlyRate: 15,
     postedDays: 3,
+    employerId: 3,  // Added employerId
   },
   {
     id: 4,
@@ -49,6 +53,7 @@ const initialJobs = [
     hours: 8,
     hourlyRate: 11,
     postedDays: 0,
+    employerId: 4,  // Added employerId
   },
   {
     id: 5,
@@ -60,6 +65,7 @@ const initialJobs = [
     hours: 4,
     hourlyRate: 13,
     postedDays: 1,
+    employerId: 5,  // Added employerId
   },
   {
     id: 6,
@@ -71,6 +77,7 @@ const initialJobs = [
     hours: 8,
     hourlyRate: 14,
     postedDays: 2,
+    employerId: 6,  // Added employerId
   },
 ];
 
