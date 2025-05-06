@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
-import { Calendar, Clock, MapPin, DollarSign, Users, Briefcase, Check, X, Plus } from "lucide-react";
+import { Calendar, Clock, MapPin, DollarSign, Users, Briefcase, Check, X, Plus, Star } from "lucide-react";
 
 // Mock data for employer dashboard
 const activeJobs = [
