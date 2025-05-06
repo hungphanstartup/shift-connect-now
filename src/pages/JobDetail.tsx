@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, DollarSign, Briefcase, Star, Building, Check } from "lucide-react";
+import { Calendar, Clock, MapPin, DollarSign, Briefcase, Star, Building, Check, X } from "lucide-react";
 
 // Mock job data
 const jobData = {
@@ -38,6 +37,7 @@ const jobData = {
     "Flexible scheduling",
   ],
   applicationCount: 3,
+  employerId: 1,
 };
 
 const JobDetailPage = () => {
@@ -76,6 +76,9 @@ const JobDetailPage = () => {
                   <div className="flex items-center text-gray-600 mb-4">
                     <Building size={16} className="mr-1" />
                     <span>{jobData.company}</span>
+                    <Link to={`/employers/${jobData.employerId || 1}/schedule`} className="ml-2 text-brand-600 text-sm hover:underline">
+                      View all recruitment dates
+                    </Link>
                   </div>
                   
                   <div className="flex flex-wrap gap-4 text-sm">
@@ -305,22 +308,3 @@ const JobDetailPage = () => {
 };
 
 export default JobDetailPage;
-
-// Missing import for X icon
-const X = ({ size = 24, ...props }: { size?: number, [key: string]: any }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round"
-    {...props}
-  >
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </svg>
-);

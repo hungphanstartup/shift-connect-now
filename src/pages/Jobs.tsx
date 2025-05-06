@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
@@ -147,7 +146,15 @@ const JobsPage = () => {
                     <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                       <div className="flex-grow">
                         <h3 className="text-lg font-semibold">{job.title}</h3>
-                        <p className="text-gray-600 text-sm">{job.company}</p>
+                        <div className="flex items-center">
+                          <p className="text-gray-600 text-sm">{job.company}</p>
+                          <Link 
+                            to={`/employers/${job.employerId || job.id}/schedule`} 
+                            className="ml-2 text-brand-600 text-xs hover:underline"
+                          >
+                            View all recruitment dates
+                          </Link>
+                        </div>
                         
                         <div className="mt-4 space-y-2">
                           <div className="flex items-center text-gray-500 text-sm">
