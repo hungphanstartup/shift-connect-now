@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import { Input } from "@/components/ui/input";
 import { Check, Loader } from "lucide-react";
+import { toast } from "sonner";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -24,16 +25,46 @@ const LoginPage = () => {
       // In a real app, this would call Supabase auth
       await new Promise(resolve => setTimeout(resolve, 1500));
       
+      // Check for demo accounts
+      let redirectUrl = "/dashboard";
+      
+      if (email === "worker@example.com" && password === "password") {
+        redirectUrl = "/dashboard?role=worker";
+      } else if (email === "employer@example.com" && password === "password") {
+        redirectUrl = "/dashboard?role=employer";
+      } else if (email === "admin@example.com" && password === "password") {
+        redirectUrl = "/dashboard?role=admin";
+      } else {
+        // If not a demo account, use the worker dashboard by default
+        redirectUrl = "/dashboard?role=worker";
+      }
+      
       // If login successful
       setShowSuccess(true);
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate(redirectUrl);
       }, 1000);
     } catch (err) {
       setError("Login failed. Please check your credentials and try again.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const loginAsDemoAccount = (role: string) => {
+    let demoEmail = "";
+    
+    if (role === "worker") {
+      demoEmail = "worker@example.com";
+    } else if (role === "employer") {
+      demoEmail = "employer@example.com";
+    } else if (role === "admin") {
+      demoEmail = "admin@example.com";
+    }
+    
+    setEmail(demoEmail);
+    setPassword("password");
+    toast.success(`Demo credentials filled for ${role} account`);
   };
 
   return (
@@ -135,6 +166,39 @@ const LoginPage = () => {
               )}
             </Button>
           </form>
+          
+          {/* Demo accounts section */}
+          <div className="mt-6 border-t border-gray-200 pt-4">
+            <h3 className="text-center text-sm font-medium text-gray-700 mb-4">
+              Demo Accounts
+            </h3>
+            <div className="grid grid-cols-3 gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => loginAsDemoAccount("worker")}
+              >
+                Worker Demo
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => loginAsDemoAccount("employer")}
+              >
+                Employer Demo
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => loginAsDemoAccount("admin")}
+              >
+                Admin Demo
+              </Button>
+            </div>
+            <div className="text-xs text-center mt-2 text-gray-500">
+              Click any button above to fill login credentials for the demo account
+            </div>
+          </div>
           
           <div className="mt-6">
             <div className="relative">

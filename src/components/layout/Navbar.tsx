@@ -1,15 +1,48 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user = null; // Will be replaced with actual authentication state
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the user is on a dashboard page, and get the role from URL
+    if (location.pathname.includes('/dashboard')) {
+      const queryParams = new URLSearchParams(location.search);
+      const roleFromQuery = queryParams.get("role");
+      
+      // Set user role from query param, pathname, or default to worker
+      if (roleFromQuery) {
+        setUserRole(roleFromQuery);
+      } else if (location.pathname.includes('/dashboard/worker')) {
+        setUserRole('worker');
+      } else if (location.pathname.includes('/dashboard/employer')) {
+        setUserRole('employer');
+      } else if (location.pathname.includes('/dashboard/admin')) {
+        setUserRole('admin');
+      } else {
+        setUserRole('worker'); // Default role
+      }
+    } else {
+      setUserRole(null); // Not logged in
+    }
+  }, [location]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    // In a real app, this would call a logout API
+    toast.success("Logged out successfully");
+    setUserRole(null);
+    navigate("/login");
   };
 
   return (
@@ -32,13 +65,24 @@ const Navbar = () => {
             About Us
           </Link>
           
-          {user ? (
-            <Link to="/dashboard">
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <User size={18} />
-                <span>Dashboard</span>
+          {userRole ? (
+            <div className="flex items-center space-x-2">
+              <Link to={`/dashboard?role=${userRole}`}>
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <User size={18} />
+                  <span className="capitalize">{userRole} Dashboard</span>
+                </Button>
+              </Link>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center gap-1 text-red-500 hover:text-red-700"
+              >
+                <LogOut size={18} />
+                <span>Logout</span>
               </Button>
-            </Link>
+            </div>
           ) : (
             <div className="flex items-center space-x-2">
               <Link to="/login">
@@ -87,17 +131,30 @@ const Navbar = () => {
             </Link>
             
             <div className="border-t border-gray-100 pt-4 flex flex-col space-y-2">
-              {user ? (
-                <Link 
-                  to="/dashboard" 
-                  className="w-full"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Button variant="outline" className="w-full flex items-center justify-center gap-2">
-                    <User size={18} />
-                    <span>Dashboard</span>
+              {userRole ? (
+                <>
+                  <Link 
+                    to={`/dashboard?role=${userRole}`}
+                    className="w-full"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+                      <User size={18} />
+                      <span className="capitalize">{userRole} Dashboard</span>
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="ghost"
+                    className="w-full flex items-center justify-center gap-2 text-red-500 hover:text-red-700"
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    <LogOut size={18} />
+                    <span>Logout</span>
                   </Button>
-                </Link>
+                </>
               ) : (
                 <>
                   <Link 

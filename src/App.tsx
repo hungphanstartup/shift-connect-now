@@ -40,7 +40,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/worker" element={<WorkerDashboard />} />
           <Route path="/dashboard/employer" element={<EmployerDashboard />} />
-          <Route path="/dashboard/admin" element={<Dashboard role="admin" />} />
+          <Route path="/dashboard/admin" element={<AdminDashboard />} />
           <Route path="/dashboard/post-job" element={<PostJob />} />
           
           {/* Catch-all */}
