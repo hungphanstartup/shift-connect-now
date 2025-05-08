@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import WorkerDashboard from "./WorkerDashboard";
 import EmployerDashboard from "./EmployerDashboard";
+import AdminDashboard from "./AdminDashboard";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -28,7 +29,13 @@ const Dashboard = () => {
   
   return (
     <>
-      {userRole === "employer" ? <EmployerDashboard /> : <WorkerDashboard />}
+      {userRole === "employer" ? (
+        <EmployerDashboard />
+      ) : userRole === "admin" ? (
+        <AdminDashboard />
+      ) : (
+        <WorkerDashboard />
+      )}
     </>
   );
 };

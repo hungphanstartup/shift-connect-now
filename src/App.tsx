@@ -14,6 +14,7 @@ import SignUp from "./pages/Auth/SignUp";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import WorkerDashboard from "./pages/Dashboard/WorkerDashboard";
 import EmployerDashboard from "./pages/Dashboard/EmployerDashboard";
+import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import PostJob from "./pages/Dashboard/PostJob";
 import EmployerSchedulePage from "./pages/EmployerSchedule";
 import NotFound from "./pages/NotFound";
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/worker" element={<WorkerDashboard />} />
           <Route path="/dashboard/employer" element={<EmployerDashboard />} />
+          <Route path="/dashboard/admin" element={<Dashboard role="admin" />} />
           <Route path="/dashboard/post-job" element={<PostJob />} />
           
           {/* Catch-all */}
