@@ -19,6 +19,11 @@ import PostJob from "./pages/Dashboard/PostJob";
 import EmployerSchedulePage from "./pages/EmployerSchedule";
 import NotFound from "./pages/NotFound";
 
+// New pages for dashboard
+import WorkerAvailability from "./pages/Dashboard/WorkerAvailability";
+import JobApplications from "./pages/Dashboard/JobApplications";
+import WorkerProfile from "./pages/Dashboard/WorkerProfile";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -45,6 +50,11 @@ const App = () => (
           
           {/* Add the missing jobs route in dashboard */}
           <Route path="/dashboard/jobs" element={<Jobs />} />
+          
+          {/* New worker dashboard routes */}
+          <Route path="/dashboard/availability" element={<WorkerAvailability />} />
+          <Route path="/dashboard/applications" element={<JobApplications />} />
+          <Route path="/dashboard/profile" element={<WorkerProfile />} />
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />

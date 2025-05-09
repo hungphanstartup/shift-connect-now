@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -100,7 +99,7 @@ const WorkerDashboard = () => {
           
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <Link to="/jobs">
+            <Link to="/dashboard/jobs">
               <Button variant="outline" className="w-full bg-white border-gray-200 hover:bg-gray-50 h-auto py-4 shadow-sm">
                 <div className="flex flex-col items-center">
                   <Search className="w-5 h-5 mb-2 text-brand-600" />
@@ -167,7 +166,7 @@ const WorkerDashboard = () => {
                   {upcomingShifts.length === 0 ? (
                     <div className="text-center py-6">
                       <p className="text-gray-500 mb-4">You don't have any upcoming shifts.</p>
-                      <Link to="/jobs">
+                      <Link to="/dashboard/jobs">
                         <Button>Find Jobs</Button>
                       </Link>
                     </div>
