@@ -55,19 +55,6 @@ const JobApplications = () => {
     if (activeTab === "all") return true;
     return app.status === activeTab;
   });
-  
-  const getStatusBadge = (status: string) => {
-    switch(status) {
-      case "pending":
-        return <Badge variant="outline" className="flex items-center gap-1 bg-yellow-50 text-yellow-700 border-yellow-200"><ClockIcon size={14} />Pending</Badge>;
-      case "accepted":
-        return <Badge variant="outline" className="flex items-center gap-1 bg-green-50 text-green-700 border-green-200"><Check size={14} />Accepted</Badge>;
-      case "declined":
-        return <Badge variant="outline" className="flex items-center gap-1 bg-red-50 text-red-700 border-red-200"><X size={14} />Declined</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
-    }
-  };
 
   return (
     <Layout showFooter={false}>
@@ -145,6 +132,20 @@ interface Application {
 }
 
 const ApplicationCard = ({ application }: { application: Application }) => {
+  // Define getStatusBadge function inside the component since we're using it here
+  const getStatusBadge = (status: string) => {
+    switch(status) {
+      case "pending":
+        return <Badge variant="outline" className="flex items-center gap-1 bg-yellow-50 text-yellow-700 border-yellow-200"><ClockIcon size={14} />Pending</Badge>;
+      case "accepted":
+        return <Badge variant="outline" className="flex items-center gap-1 bg-green-50 text-green-700 border-green-200"><Check size={14} />Accepted</Badge>;
+      case "declined":
+        return <Badge variant="outline" className="flex items-center gap-1 bg-red-50 text-red-700 border-red-200"><X size={14} />Declined</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
+  
   return (
     <div className="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow">
       <div className="flex flex-col md:flex-row md:items-center gap-4">

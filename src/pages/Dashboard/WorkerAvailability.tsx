@@ -86,7 +86,16 @@ const WorkerAvailability = () => {
               <Calendar
                 mode="multiple"
                 selected={selectedDates}
-                onSelect={(value) => handleDateSelect(value as Date)}
+                onSelect={(value) => {
+                  // Handle the type issue by treating single Date as an array with one item
+                  if (value instanceof Date) {
+                    handleDateSelect(value);
+                  } else if (Array.isArray(value)) {
+                    // When a date is selected or deselected, the last one in the array is the one that changed
+                    const lastSelectedDate = value.length > 0 ? value[value.length - 1] : undefined;
+                    handleDateSelect(lastSelectedDate);
+                  }
+                }}
                 className="rounded-md border"
                 disabled={(date) => {
                   // Disable dates in the past
