@@ -24,6 +24,7 @@ import Employers from "./pages/Employers";
 import WorkerAvailability from "./pages/Dashboard/WorkerAvailability";
 import JobApplications from "./pages/Dashboard/JobApplications";
 import WorkerProfile from "./pages/Dashboard/WorkerProfile";
+import FindWorkers from "./pages/Dashboard/FindWorkers";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,9 @@ const App = () => (
           <Route path="/dashboard/availability" element={<WorkerAvailability />} />
           <Route path="/dashboard/applications" element={<JobApplications />} />
           <Route path="/dashboard/profile" element={<WorkerProfile />} />
+          
+          {/* New route for finding available workers */}
+          <Route path="/dashboard/find-workers" element={<FindWorkers />} />
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
