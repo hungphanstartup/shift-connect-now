@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,23 +11,37 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is on a dashboard page, and get the role from URL
-    if (location.pathname.includes('/dashboard')) {
+    // Check if user is authenticated from localStorage
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    const storedRole = localStorage.getItem("userRole");
+    
+    if (isAuthenticated && storedRole) {
+      setUserRole(storedRole);
+    } else if (location.pathname.includes('/dashboard')) {
+      // Fallback to query params if available
       const queryParams = new URLSearchParams(location.search);
       const roleFromQuery = queryParams.get("role");
       
       // Set user role from query param, pathname, or default to worker
       if (roleFromQuery) {
         setUserRole(roleFromQuery);
+        localStorage.setItem("userRole", roleFromQuery);
       } else if (location.pathname.includes('/dashboard/worker')) {
         setUserRole('worker');
+        localStorage.setItem("userRole", 'worker');
       } else if (location.pathname.includes('/dashboard/employer')) {
         setUserRole('employer');
+        localStorage.setItem("userRole", 'employer');
       } else if (location.pathname.includes('/dashboard/admin')) {
         setUserRole('admin');
+        localStorage.setItem("userRole", 'admin');
       } else {
         setUserRole('worker'); // Default role
+        localStorage.setItem("userRole", 'worker');
       }
+      
+      // Ensure isAuthenticated is set if we're on dashboard pages
+      localStorage.setItem("isAuthenticated", "true");
     } else {
       setUserRole(null); // Not logged in
     }
@@ -39,7 +52,10 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // In a real app, this would call a logout API
+    // Clear authentication data
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userRole");
+    
     toast.success("Logged out successfully");
     setUserRole(null);
     navigate("/login");

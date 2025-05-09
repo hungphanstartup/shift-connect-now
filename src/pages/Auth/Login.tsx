@@ -27,17 +27,26 @@ const LoginPage = () => {
       
       // Check for demo accounts
       let redirectUrl = "/dashboard";
+      let role = "worker";
       
       if (email === "worker@example.com" && password === "password") {
         redirectUrl = "/dashboard?role=worker";
+        role = "worker";
       } else if (email === "employer@example.com" && password === "password") {
         redirectUrl = "/dashboard?role=employer";
+        role = "employer";
       } else if (email === "admin@example.com" && password === "password") {
         redirectUrl = "/dashboard?role=admin";
+        role = "admin";
       } else {
         // If not a demo account, use the worker dashboard by default
         redirectUrl = "/dashboard?role=worker";
+        role = "worker";
       }
+      
+      // Store authentication state in localStorage
+      localStorage.setItem("isAuthenticated", "true");
+      localStorage.setItem("userRole", role);
       
       // If login successful
       setShowSuccess(true);

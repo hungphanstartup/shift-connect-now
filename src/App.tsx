@@ -43,6 +43,9 @@ const App = () => (
           <Route path="/dashboard/admin" element={<AdminDashboard />} />
           <Route path="/dashboard/post-job" element={<PostJob />} />
           
+          {/* Add the missing jobs route in dashboard */}
+          <Route path="/dashboard/jobs" element={<Jobs />} />
+          
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>

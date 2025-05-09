@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import WorkerDashboard from "./WorkerDashboard";
@@ -20,14 +21,24 @@ const Dashboard = ({ role: propRole }: DashboardProps = {}) => {
     
     // Otherwise check URL query params
     const queryParams = new URLSearchParams(location.search);
-    return queryParams.get("role") || "worker";
+    const roleFromQuery = queryParams.get("role");
+    
+    // Check if we have a role in localStorage (this helps maintain state across navigation)
+    const storedRole = localStorage.getItem("userRole");
+    
+    return roleFromQuery || storedRole || "worker";
   };
   
   const userRole = getUserRole();
   
+  // Store the role in localStorage to maintain it across navigation
+  useEffect(() => {
+    localStorage.setItem("userRole", userRole);
+  }, [userRole]);
+  
   // In a real app, you'd check if the user is authenticated here
   useEffect(() => {
-    const isAuthenticated = true; // This would be a real check
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
     
     if (!isAuthenticated) {
       navigate("/login");
