@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import PostJob from "./pages/Dashboard/PostJob";
 import EmployerSchedulePage from "./pages/EmployerSchedule";
 import NotFound from "./pages/NotFound";
+import Employers from "./pages/Employers";
 
 // New pages for dashboard
 import WorkerAvailability from "./pages/Dashboard/WorkerAvailability";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/" element={<Home />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/jobs/:id" element={<JobDetail />} />
+          <Route path="/employers" element={<Employers />} />
           <Route path="/employers/:id/schedule" element={<EmployerSchedulePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
