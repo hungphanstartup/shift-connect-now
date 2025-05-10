@@ -1,3 +1,4 @@
+
 export const jobIndustries = [
   "Tất cả", "Bảo vệ", "Công nhân", "Nhà hàng", "Bốc Vác"
 ];

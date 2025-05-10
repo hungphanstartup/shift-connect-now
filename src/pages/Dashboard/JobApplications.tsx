@@ -10,40 +10,40 @@ import { CalendarClock, Clock, MapPin, DollarSign, Check, X, Clock as ClockIcon,
 const mockApplications = [
   {
     id: 1,
-    jobTitle: "Restaurant Server",
-    company: "Downtown Cafe",
+    jobTitle: "Phục vụ nhà hàng",
+    company: "Quán cà phê Downtown",
     companyLogo: "/placeholder.svg",
-    location: "District 1, Ho Chi Minh City",
-    date: "May 12, 2025",
-    timeRange: "6:00 PM - 10:00 PM",
+    location: "Quận 1, Hồ Chí Minh",
+    date: "12/05/2025",
+    timeRange: "18:00 - 22:00",
     hourlyRate: 12,
     status: "pending",
-    appliedDate: "May 5, 2025"
+    appliedDate: "05/05/2025"
   },
   {
     id: 2,
-    jobTitle: "Event Staff",
-    company: "City Convention Center",
+    jobTitle: "Nhân viên sự kiện",
+    company: "Trung tâm hội nghị",
     companyLogo: "/placeholder.svg",
-    location: "District 7, Ho Chi Minh City",
-    date: "May 15, 2025",
-    timeRange: "2:00 PM - 10:00 PM",
+    location: "Quận 7, Hồ Chí Minh",
+    date: "15/05/2025",
+    timeRange: "14:00 - 22:00",
     hourlyRate: 15,
     status: "accepted",
-    appliedDate: "May 3, 2025"
+    appliedDate: "03/05/2025"
   },
   {
     id: 3,
-    jobTitle: "Office Assistant",
+    jobTitle: "Trợ lý văn phòng",
     company: "Business Solutions Inc",
     companyLogo: "/placeholder.svg",
-    location: "District 4, Ho Chi Minh City",
-    date: "May 18, 2025",
-    timeRange: "9:00 AM - 5:00 PM",
+    location: "Quận 4, Hồ Chí Minh",
+    date: "18/05/2025",
+    timeRange: "9:00 - 17:00",
     hourlyRate: 14,
     status: "declined",
-    appliedDate: "May 2, 2025",
-    declineReason: "Position has been filled"
+    appliedDate: "02/05/2025",
+    declineReason: "Vị trí đã được tuyển đủ"
   }
 ];
 
@@ -60,20 +60,20 @@ const JobApplications = () => {
     <Layout showFooter={false}>
       <div className="bg-gray-50 min-h-screen">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold mb-6">My Job Applications</h1>
+          <h1 className="text-2xl font-bold mb-6">Đơn ứng tuyển của tôi</h1>
           
           <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="w-full">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-flex mb-6">
-                <TabsTrigger value="all">All Applications</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="accepted">Accepted</TabsTrigger>
+                <TabsTrigger value="all">Tất cả đơn</TabsTrigger>
+                <TabsTrigger value="pending">Đang chờ</TabsTrigger>
+                <TabsTrigger value="accepted">Đã chấp nhận</TabsTrigger>
               </TabsList>
               
               <TabsContent value="all" className="mt-0">
                 {filteredApplications.length === 0 ? (
                   <div className="text-center py-10">
-                    <p className="text-gray-500">No applications found.</p>
+                    <p className="text-gray-500">Không tìm thấy đơn ứng tuyển nào.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -86,7 +86,7 @@ const JobApplications = () => {
               <TabsContent value="pending" className="mt-0">
                 {filteredApplications.length === 0 ? (
                   <div className="text-center py-10">
-                    <p className="text-gray-500">No pending applications.</p>
+                    <p className="text-gray-500">Không có đơn ứng tuyển nào đang chờ.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -99,7 +99,7 @@ const JobApplications = () => {
               <TabsContent value="accepted" className="mt-0">
                 {filteredApplications.length === 0 ? (
                   <div className="text-center py-10">
-                    <p className="text-gray-500">No accepted applications.</p>
+                    <p className="text-gray-500">Không có đơn ứng tuyển nào được chấp nhận.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -136,11 +136,11 @@ const ApplicationCard = ({ application }: { application: Application }) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case "pending":
-        return <Badge variant="outline" className="flex items-center gap-1 bg-yellow-50 text-yellow-700 border-yellow-200"><ClockIcon size={14} />Pending</Badge>;
+        return <Badge variant="outline" className="flex items-center gap-1 bg-yellow-50 text-yellow-700 border-yellow-200"><ClockIcon size={14} />Đang chờ</Badge>;
       case "accepted":
-        return <Badge variant="outline" className="flex items-center gap-1 bg-green-50 text-green-700 border-green-200"><Check size={14} />Accepted</Badge>;
+        return <Badge variant="outline" className="flex items-center gap-1 bg-green-50 text-green-700 border-green-200"><Check size={14} />Đã chấp nhận</Badge>;
       case "declined":
-        return <Badge variant="outline" className="flex items-center gap-1 bg-red-50 text-red-700 border-red-200"><X size={14} />Declined</Badge>;
+        return <Badge variant="outline" className="flex items-center gap-1 bg-red-50 text-red-700 border-red-200"><X size={14} />Đã từ chối</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -175,13 +175,13 @@ const ApplicationCard = ({ application }: { application: Application }) => {
             </div>
             <div className="flex items-center text-gray-500 text-sm">
               <DollarSign size={14} className="mr-2" />
-              <span>${application.hourlyRate}/hour</span>
+              <span>{application.hourlyRate} VNĐ/giờ</span>
             </div>
           </div>
           
           {application.declineReason && (
             <div className="mt-2 p-2 bg-red-50 text-red-700 text-sm rounded">
-              <strong>Reason:</strong> {application.declineReason}
+              <strong>Lý do:</strong> {application.declineReason}
             </div>
           )}
         </div>
@@ -190,8 +190,8 @@ const ApplicationCard = ({ application }: { application: Application }) => {
           <div className="mb-2">
             {getStatusBadge(application.status)}
           </div>
-          <p className="text-xs text-gray-500 mb-3">Applied on {application.appliedDate}</p>
-          <Button variant="outline" size="sm">View Details</Button>
+          <p className="text-xs text-gray-500 mb-3">Ứng tuyển vào {application.appliedDate}</p>
+          <Button variant="outline" size="sm">Xem chi tiết</Button>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+
 export const demoAccounts: Record<string, { email: string; password: string }> = {
   worker: {
     email: "worker@example.com",

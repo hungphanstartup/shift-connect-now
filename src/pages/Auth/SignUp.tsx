@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -72,7 +73,7 @@ const SignUpPage = () => {
         navigate("/login");
       }, 1500);
     } catch (err: any) {
-      setError(err.message || "Registration failed. Please try again.");
+      setError(err.message || "Đăng ký thất bại. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +87,7 @@ const SignUpPage = () => {
           {showSuccess && (
             <div className="bg-success-100 border border-success-200 text-success-800 rounded-md p-4 mb-6 flex items-center animate-fade-in">
               <Check className="w-5 h-5 mr-3 text-success-600" />
-              <span>Registration successful! Redirecting to login...</span>
+              <span>Đăng ký thành công! Đang chuyển hướng đến trang đăng nhập...</span>
             </div>
           )}
           
@@ -98,11 +99,11 @@ const SignUpPage = () => {
           )}
           
           <div className="text-center">
-            <h2 className="mt-6 text-3xl font-bold text-gray-900">Create your account</h2>
+            <h2 className="mt-6 text-3xl font-bold text-gray-900">Tạo tài khoản mới</h2>
             <p className="mt-2 text-sm text-gray-600">
-              Already have an account?{" "}
+              Đã có tài khoản?{" "}
               <Link to="/login" className="font-medium text-brand-600 hover:text-brand-500">
-                Sign in
+                Đăng nhập
               </Link>
             </p>
           </div>
@@ -120,7 +121,7 @@ const SignUpPage = () => {
                       : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
-                  I'm a Worker
+                  Tôi là Người lao động
                 </button>
                 <button
                   type="button"
@@ -131,7 +132,7 @@ const SignUpPage = () => {
                       : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
-                  I'm an Employer
+                  Tôi là Nhà tuyển dụng
                 </button>
               </div>
             </div>
@@ -140,7 +141,7 @@ const SignUpPage = () => {
               <div className="rounded-md shadow-sm space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    {role === "worker" ? "Full Name" : "Business Name"}
+                    {role === "worker" ? "Họ và tên" : "Tên công ty"}
                   </label>
                   <Input
                     id="name"
@@ -155,7 +156,7 @@ const SignUpPage = () => {
                 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email address
+                    Địa chỉ email
                   </label>
                   <Input
                     id="email"
@@ -171,7 +172,7 @@ const SignUpPage = () => {
                 
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone Number
+                    Số điện thoại
                   </label>
                   <Input
                     id="phone"
@@ -187,7 +188,7 @@ const SignUpPage = () => {
                 
                 <div>
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                    Password
+                    Mật khẩu
                   </label>
                   <div className="relative">
                     <Input
@@ -222,13 +223,13 @@ const SignUpPage = () => {
                   className="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded"
                 />
                 <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-900">
-                  I agree to the{" "}
+                  Tôi đồng ý với{" "}
                   <Link to="/terms" className="font-medium text-brand-600 hover:text-brand-500">
-                    Terms of Service
+                    Điều khoản dịch vụ
                   </Link>{" "}
-                  and{" "}
+                  và{" "}
                   <Link to="/privacy" className="font-medium text-brand-600 hover:text-brand-500">
-                    Privacy Policy
+                    Chính sách bảo mật
                   </Link>
                 </label>
               </div>
@@ -241,10 +242,10 @@ const SignUpPage = () => {
                 {isLoading ? (
                   <span className="flex items-center justify-center">
                     <Loader className="animate-spin -ml-1 mr-2 h-4 w-4" />
-                    Creating account...
+                    Đang tạo tài khoản...
                   </span>
                 ) : (
-                  <span>Sign up</span>
+                  <span>Đăng ký</span>
                 )}
               </Button>
             </form>
@@ -255,7 +256,7 @@ const SignUpPage = () => {
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
+                  <span className="px-2 bg-gray-50 text-gray-500">Hoặc đăng ký bằng</span>
                 </div>
               </div>
 

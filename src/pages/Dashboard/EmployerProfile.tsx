@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,7 +45,7 @@ const EmployerProfile = () => {
     name: "Cafe XYZ",
     email: "employer@example.com",
     phone: "0123456789",
-    address: "123 Main St, Ho Chi Minh City",
+    address: "123 Main St, Hồ Chí Minh",
   };
   
   const form = useForm<ProfileFormValues>({

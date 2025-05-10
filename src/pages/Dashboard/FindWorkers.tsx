@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -54,7 +55,7 @@ const FindWorkers = () => {
         { start: "08:00", end: "12:00" },
         { start: "14:00", end: "18:00" }
       ],
-      skills: ["Waiter", "Bartender", "Customer Service"],
+      skills: ["Phục vụ", "Pha chế", "Chăm sóc khách hàng"],
       location: { city: "Hồ Chí Minh", district: "Quận 1", address: "" },
     },
     {
@@ -65,7 +66,7 @@ const FindWorkers = () => {
       availabilitySlots: [
         { start: "09:00", end: "17:00" }
       ],
-      skills: ["Office Assistant", "Data Entry", "Customer Service"],
+      skills: ["Trợ lý văn phòng", "Nhập liệu", "Chăm sóc khách hàng"],
       location: { city: "Hồ Chí Minh", district: "Thủ Đức", address: "" },
     },
     {
@@ -77,7 +78,7 @@ const FindWorkers = () => {
         { start: "12:00", end: "16:00" },
         { start: "18:00", end: "22:00" }
       ],
-      skills: ["Event Staff", "Security", "Customer Service"],
+      skills: ["Nhân viên sự kiện", "Bảo vệ", "Chăm sóc khách hàng"],
       location: { city: "Hồ Chí Minh", district: "Quận 7", address: "" },
     },
     {
@@ -89,7 +90,7 @@ const FindWorkers = () => {
         { start: "08:00", end: "12:00" },
         { start: "16:00", end: "20:00" }
       ],
-      skills: ["Warehouse", "Delivery", "Logistics"],
+      skills: ["Kho bãi", "Giao hàng", "Vận chuyển"],
       location: { city: "Hồ Chí Minh", district: "Quận 3", address: "" },
     }
   ];
@@ -99,10 +100,10 @@ const FindWorkers = () => {
   
   // Common time slots for filtering
   const timeSlots = [
-    "Morning (8:00 - 12:00)",
-    "Afternoon (12:00 - 16:00)",
-    "Evening (16:00 - 20:00)",
-    "Night (20:00 - 24:00)"
+    "Sáng (8:00 - 12:00)",
+    "Trưa (12:00 - 16:00)",
+    "Chiều (16:00 - 20:00)",
+    "Tối (20:00 - 24:00)"
   ];
 
   // Filter workers based on search term, skills and time
@@ -112,19 +113,19 @@ const FindWorkers = () => {
     
     let matchesTime = true;
     if (timeFilter) {
-      if (timeFilter === "Morning (8:00 - 12:00)") {
+      if (timeFilter === "Sáng (8:00 - 12:00)") {
         matchesTime = worker.availabilitySlots.some(
           slot => slot.start <= "08:00" && slot.end >= "12:00"
         );
-      } else if (timeFilter === "Afternoon (12:00 - 16:00)") {
+      } else if (timeFilter === "Trưa (12:00 - 16:00)") {
         matchesTime = worker.availabilitySlots.some(
           slot => slot.start <= "12:00" && slot.end >= "16:00"
         );
-      } else if (timeFilter === "Evening (16:00 - 20:00)") {
+      } else if (timeFilter === "Chiều (16:00 - 20:00)") {
         matchesTime = worker.availabilitySlots.some(
           slot => slot.start <= "16:00" && slot.end >= "20:00"
         );
-      } else if (timeFilter === "Night (20:00 - 24:00)") {
+      } else if (timeFilter === "Tối (20:00 - 24:00)") {
         matchesTime = worker.availabilitySlots.some(
           slot => slot.start <= "20:00" && slot.end >= "24:00"
         );
@@ -183,8 +184,8 @@ const FindWorkers = () => {
             {filteredWorkers.map(worker => (
               <div key={worker.id} className="bg-white rounded-lg p-6 border border-gray-100 shadow-sm">
                 <h3 className="text-lg font-semibold">{worker.name}</h3>
-                <p className="text-gray-600">Rating: {worker.rating}</p>
-                <p className="text-gray-600">Completed Jobs: {worker.completedJobs}</p>
+                <p className="text-gray-600">Đánh giá: {worker.rating}</p>
+                <p className="text-gray-600">Công việc đã hoàn thành: {worker.completedJobs}</p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {worker.skills.map(skill => (
                     <span key={skill} className="bg-gray-100 text-gray-600 text-xs font-medium py-1 px-2 rounded">

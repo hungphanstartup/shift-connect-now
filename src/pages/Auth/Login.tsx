@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -67,7 +68,7 @@ const LoginPage = () => {
     if (demo) {
       setEmail(demo.email);
       setPassword(demo.password);
-      toast.success(`Demo credentials filled for ${role} account`);
+      toast.success(`Đã điền thông tin đăng nhập mẫu cho tài khoản ${role}`);
     }
   };
 
@@ -79,7 +80,7 @@ const LoginPage = () => {
           {showSuccess && (
             <div className="bg-success-100 border border-success-200 text-success-800 rounded-md p-4 mb-6 flex items-center animate-fade-in">
               <Check className="w-5 h-5 mr-3 text-success-600" />
-              <span>Login successful! Redirecting to dashboard...</span>
+              <span>Đăng nhập thành công! Đang chuyển hướng đến trang quản lý...</span>
             </div>
           )}
           {/* Error message */}
@@ -91,7 +92,7 @@ const LoginPage = () => {
           <div className="text-center">
             <h2 className="mt-6 text-3xl font-bold text-gray-900">Đăng nhập vào tài khoản</h2>
             <p className="mt-2 text-sm text-gray-600">
-              Or{" "}
+              Hoặc{" "}
               <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-500">
                 tạo tài khoản mới
               </Link>
@@ -203,7 +204,7 @@ const LoginPage = () => {
               </Button>
             </div>
             <div className="text-xs text-center mt-2 text-gray-500">
-              Click any button above to fill login credentials for the demo account
+              Nhấn vào các nút trên để điền nhanh thông tin đăng nhập mẫu
             </div>
           </div>
           <div className="mt-6">
@@ -212,7 +213,7 @@ const LoginPage = () => {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
+                <span className="px-2 bg-gray-50 text-gray-500">Hoặc đăng nhập bằng</span>
               </div>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-3">
