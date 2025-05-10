@@ -89,6 +89,18 @@ export default {
           900: "#064E3B",
           950: "#022C22",
         },
+        // Thêm màu cho TopCV
+        topcv: {
+          primary: "#00b14f", // Màu xanh lá của TopCV
+          secondary: "#004d40", // Màu xanh đậm
+          dark: "#003a2f", // Màu xanh tối
+          light: "#e6f7ef", // Màu xanh nhạt
+          gray: "#f2f2f2", // Màu xám nhạt
+          text: "#333333", // Màu chữ chính
+          link: "#00b14f", // Màu link
+          hover: "#009f47", // Màu hover
+          background: "#004030", // Màu nền tối
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -121,6 +133,9 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
+      },
+      backgroundImage: {
+        'topcv-gradient': 'linear-gradient(to bottom, #004030, #006a51)',
       },
     },
   },

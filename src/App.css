@@ -1,42 +1,186 @@
+
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0;
+  text-align: left;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
+.topcv-logo {
+  height: 2.5em;
+  padding: 0.5em;
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+
+.topcv-logo:hover {
+  filter: drop-shadow(0 0 1em #00b14faa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.topcv-banner {
+  background: linear-gradient(to right, #004030, #00684d);
+  color: white;
+}
+
+.topcv-search-panel {
+  background-color: #004030;
+  padding: 2rem 0;
+  color: white;
+}
+
+.topcv-search-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.topcv-search-box {
+  display: flex;
+  background: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.topcv-search-input {
+  flex: 1;
+  border: none;
+  padding: 0.75rem 1rem;
+  outline: none;
+}
+
+.topcv-search-location {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-left: 1px solid #e2e8f0;
+}
+
+.topcv-search-button {
+  background-color: #00b14f;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.topcv-search-button:hover {
+  background-color: #009f47;
+}
+
+.topcv-categories {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}
+
+.topcv-category-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.topcv-category-item:hover {
+  background-color: #f8fafc;
+}
+
+.topcv-category-item:last-child {
+  border-bottom: none;
+}
+
+.topcv-jobs-section {
+  background-color: #f8fafc;
+  padding: 2rem 0;
+}
+
+.topcv-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.topcv-job-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.topcv-job-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.topcv-job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.topcv-filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.topcv-filter-tag {
+  background-color: #e6f7ef;
+  color: #00b14f;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.topcv-stats-container {
+  background-color: #004030;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.topcv-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.topcv-stats-item {
+  display: flex;
+  align-items: center;
+}
+
+.topcv-stats-value {
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .topcv-logo.animate {
+    animation: topcv-logo-pulse infinite 3s ease-in-out;
   }
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+@keyframes topcv-logo-pulse {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.2) drop-shadow(0 0 0.5em #00b14f80);
+  }
+  100% {
+    filter: brightness(1);
+  }
 }

@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 221.2 83.2% 53.3%;
+    --primary: 144 100% 35%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -33,39 +33,39 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --ring: 144 100% 35%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 162 100% 12%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 162 100% 12%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 162 100% 12%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217.2 91.2% 59.8%;
+    --primary: 144 100% 35%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 162 76% 19%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 162 76% 19%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 162 76% 19%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --border: 162 76% 19%;
+    --input: 162 76% 19%;
+    --ring: 144 100% 35%;
   }
 }
 
@@ -80,15 +80,15 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2 px-4 rounded-md transition-colors;
+    @apply bg-topcv-primary hover:bg-topcv-hover text-white font-semibold py-2 px-4 rounded transition-colors;
   }
   
   .btn-secondary {
-    @apply bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold py-2 px-4 rounded-md transition-colors;
+    @apply bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold py-2 px-4 rounded transition-colors;
   }
   
   .btn-outline {
-    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground py-2 px-4 rounded-md transition-colors;
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground py-2 px-4 rounded transition-colors;
   }
   
   .card-hover {
@@ -97,5 +97,46 @@
   
   .form-input {
     @apply w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  /* TopCV specific styles */
+  .topcv-header {
+    @apply bg-white border-b border-gray-200 shadow-sm;
+  }
+
+  .topcv-footer {
+    @apply bg-topcv-dark text-white pt-10 pb-6;
+  }
+
+  .topcv-hero {
+    @apply bg-topcv-background text-white py-8;
+  }
+
+  .topcv-container {
+    @apply container mx-auto px-4;
+  }
+
+  .topcv-input {
+    @apply w-full h-12 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-topcv-primary;
+  }
+
+  .topcv-button {
+    @apply bg-topcv-primary hover:bg-topcv-hover text-white font-medium py-2 px-6 rounded transition-colors;
+  }
+
+  .topcv-link {
+    @apply text-topcv-link hover:text-topcv-hover transition-colors;
+  }
+
+  .topcv-search-box {
+    @apply bg-white rounded-md shadow-md overflow-hidden;
+  }
+
+  .topcv-job-card {
+    @apply bg-white rounded-md border border-gray-200 shadow-sm p-4 hover:shadow-md transition-shadow;
+  }
+
+  .topcv-section {
+    @apply py-8;
   }
 }
