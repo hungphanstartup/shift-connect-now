@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -65,19 +66,19 @@ const Navbar = () => {
     <nav className="bg-white border-b border-gray-200 py-4 px-4 md:px-6 shadow-sm">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-brand-600">vieclamthoivu</span>
-          <span className="hidden md:inline text-brand-600">.com</span>
+          <span className="text-xl font-bold text-topcv-primary">vieclamthoivu</span>
+          <span className="hidden md:inline text-topcv-primary">.com</span>
         </Link>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/jobs" className="text-gray-600 hover:text-brand-600 transition-colors">
+          <Link to="/jobs" className="text-gray-600 hover:text-topcv-primary transition-colors">
             Find Jobs
           </Link>
-          <Link to="/employers" className="text-gray-600 hover:text-brand-600 transition-colors">
+          <Link to="/employers" className="text-gray-600 hover:text-topcv-primary transition-colors">
             For Employers
           </Link>
-          <Link to="/about" className="text-gray-600 hover:text-brand-600 transition-colors">
+          <Link to="/about" className="text-gray-600 hover:text-topcv-primary transition-colors">
             About Us
           </Link>
           
@@ -126,21 +127,21 @@ const Navbar = () => {
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             <Link 
               to="/jobs" 
-              className="text-gray-600 hover:text-brand-600 py-2 transition-colors"
+              className="text-gray-600 hover:text-topcv-primary py-2 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Find Jobs
             </Link>
             <Link 
               to="/employers" 
-              className="text-gray-600 hover:text-brand-600 py-2 transition-colors"
+              className="text-gray-600 hover:text-topcv-primary py-2 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               For Employers
             </Link>
             <Link 
               to="/about" 
-              className="text-gray-600 hover:text-brand-600 py-2 transition-colors"
+              className="text-gray-600 hover:text-topcv-primary py-2 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               About Us
