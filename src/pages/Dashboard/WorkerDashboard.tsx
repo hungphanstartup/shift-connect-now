@@ -10,7 +10,7 @@ const upcomingShifts = [
     id: 1,
     jobTitle: "Restaurant Server",
     company: "Downtown Cafe",
-    location: "District 1, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Quận 1", address: "" },
     date: "May 10, 2025",
     time: "6:00 PM - 10:00 PM",
     hours: 4,
@@ -21,7 +21,7 @@ const upcomingShifts = [
     id: 2,
     jobTitle: "Event Staff",
     company: "City Convention Center",
-    location: "District 7, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Quận 7", address: "" },
     date: "May 15, 2025",
     time: "3:00 PM - 9:00 PM",
     hours: 6,
@@ -35,7 +35,7 @@ const applicationHistory = [
     id: 3,
     jobTitle: "Office Assistant",
     company: "Business Solutions",
-    location: "District 1, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Quận 1", address: "" },
     date: "May 5, 2025",
     status: "completed",
     rating: 4.5,
@@ -44,7 +44,7 @@ const applicationHistory = [
     id: 4,
     jobTitle: "Retail Assistant",
     company: "Fashion Outlet",
-    location: "District 3, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Quận 3", address: "" },
     date: "April 28, 2025",
     status: "completed",
     rating: 5,
@@ -53,7 +53,7 @@ const applicationHistory = [
     id: 5,
     jobTitle: "Warehouse Packer",
     company: "Global Logistics",
-    location: "Thu Duc City, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Thủ Đức", address: "" },
     date: "April 20, 2025",
     status: "declined",
   }
@@ -189,11 +189,11 @@ const WorkerDashboard = () => {
                               </div>
                               <div className="flex items-center text-gray-500 text-sm">
                                 <MapPin size={15} className="mr-2" />
-                                <span>{shift.location}</span>
+                                <span>{shift.location.district}, {shift.location.city}, {shift.location.address}</span>
                               </div>
                               <div className="flex items-center text-gray-500 text-sm">
                                 <DollarSign size={15} className="mr-2" />
-                                <span>${shift.hourlyRate}/hour (${shift.hourlyRate * shift.hours} total)</span>
+                                <span>{shift.hourlyRate.toLocaleString()} VNĐ/giờ</span>
                               </div>
                             </div>
                           </div>

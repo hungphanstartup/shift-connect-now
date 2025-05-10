@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,31 +21,102 @@ import {
   CheckCircle,
   User,
 } from "lucide-react";
-
-// Mock data for the admin dashboard
-const stats = [
-  { title: "Total Users", value: 1250, change: "+15%", icon: Users },
-  { title: "Active Jobs", value: 87, change: "+23%", icon: Briefcase },
-  { title: "Completed Jobs", value: 342, change: "+7%", icon: CheckCircle },
-  { title: "Reports", value: 12, change: "-3%", icon: AlertCircle },
-];
-
-const recentEmployers = [
-  { id: 1, name: "Downtown Cafe", jobs: 5, workers: 8, status: "active" },
-  { id: 2, name: "Global Logistics", jobs: 12, workers: 25, status: "active" },
-  { id: 3, name: "City Convention Center", jobs: 3, workers: 15, status: "active" },
-  { id: 4, name: "Fashion Outlet", jobs: 7, workers: 12, status: "pending" },
-];
-
-const recentWorkers = [
-  { id: 1, name: "Nguyen Van A", jobs: 12, rating: 4.8, status: "active" },
-  { id: 2, name: "Tran Thi B", jobs: 15, rating: 4.5, status: "active" },
-  { id: 3, name: "Le Van C", jobs: 8, rating: 4.2, status: "active" },
-  { id: 4, name: "Pham Minh D", jobs: 5, rating: 3.9, status: "inactive" },
-];
+import { supabase } from '@/lib/supabase';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [stats, setStats] = useState([
+    { title: "Total Users", value: 0, change: "", icon: Users },
+    { title: "Active Jobs", value: 0, change: "", icon: Briefcase },
+    { title: "Completed Jobs", value: 0, change: "", icon: CheckCircle },
+    { title: "Reports", value: 0, change: "", icon: AlertCircle },
+  ]);
+  const [recentEmployers, setRecentEmployers] = useState([]);
+  const [recentWorkers, setRecentWorkers] = useState([]);
+  const [jobStats, setJobStats] = useState({
+    activeJobs: 0,
+    positionsAvailable: 0,
+    positionsFilled: 0,
+    avgHourlyRate: 0,
+    categories: [],
+  });
+
+  useEffect(() => {
+    // Fetch stats
+    const fetchStats = async () => {
+      // Total users
+      const { count: userCount } = await supabase.from('users').select('*', { count: 'exact', head: true });
+      // Active jobs
+      const { count: activeJobCount } = await supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'active');
+      // Completed jobs
+      const { count: completedJobCount } = await supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'completed');
+      // Reports (giả sử có bảng reports, nếu không thì để 0)
+      setStats([
+        { title: "Total Users", value: userCount || 0, change: "", icon: Users },
+        { title: "Active Jobs", value: activeJobCount || 0, change: "", icon: Briefcase },
+        { title: "Completed Jobs", value: completedJobCount || 0, change: "", icon: CheckCircle },
+        { title: "Reports", value: 0, change: "", icon: AlertCircle },
+      ]);
+    };
+    // Fetch recent employers
+    const fetchEmployers = async () => {
+      const { data: employers } = await supabase.from('employers').select('id, company_name, status').order('created_at', { ascending: false }).limit(4);
+      // Đếm số jobs và workers cho mỗi employer
+      if (employers && employers.length > 0) {
+        const employerIds = employers.map(e => e.id);
+        const { data: jobs } = await supabase.from('jobs').select('id, employer_id');
+        const { data: workers } = await supabase.from('workers').select('id');
+        setRecentEmployers(employers.map(e => ({
+          id: e.id,
+          name: e.company_name,
+          jobs: jobs ? jobs.filter(j => j.employer_id === e.id).length : 0,
+          workers: workers ? workers.length : 0, // Nếu có bảng liên kết workers-employer thì cần sửa lại
+          status: e.status || 'active',
+        })));
+      } else {
+        setRecentEmployers([]);
+      }
+    };
+    // Fetch recent workers
+    const fetchWorkers = async () => {
+      const { data: workers } = await supabase.from('workers').select('id, user_id, jobs_completed, rating, status');
+      const { data: users } = await supabase.from('users').select('id, full_name');
+      setRecentWorkers((workers || []).slice(0, 4).map(w => ({
+        id: w.id,
+        name: users?.find(u => u.id === w.user_id)?.full_name || `Worker ${w.id}`,
+        jobs: w.jobs_completed,
+        rating: w.rating,
+        status: w.status || 'active',
+      })));
+    };
+    // Fetch job stats
+    const fetchJobStats = async () => {
+      const { data: jobs } = await supabase.from('jobs').select('*');
+      if (jobs) {
+        const activeJobs = jobs.filter(j => j.status === 'active').length;
+        const positionsAvailable = jobs.reduce((acc, j) => acc + (j.positions || 0), 0);
+        const positionsFilled = jobs.reduce((acc, j) => acc + (j.filled_positions || 0), 0);
+        const avgHourlyRate = jobs.length > 0 ? Number((jobs.reduce((acc, j) => acc + (j.hourly_rate || 0), 0) / jobs.length).toFixed(2)) : 0;
+        // Thống kê category
+        const categoryMap = {};
+        jobs.forEach(j => {
+          if (j.industry) categoryMap[j.industry] = (categoryMap[j.industry] || 0) + 1;
+        });
+        const categories = Object.entries(categoryMap).map(([name, count]) => ({ name, count: Number(count) }));
+        setJobStats({
+          activeJobs,
+          positionsAvailable,
+          positionsFilled,
+          avgHourlyRate,
+          categories,
+        });
+      }
+    };
+    fetchStats();
+    fetchEmployers();
+    fetchWorkers();
+    fetchJobStats();
+  }, []);
 
   return (
     <Layout showFooter={false}>
@@ -97,8 +167,8 @@ const AdminDashboard = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{stat.value}</div>
-                  <p className={`text-xs ${stat.change.includes('+') ? 'text-green-500' : 'text-red-500'}`}>
-                    {stat.change} from last month
+                  <p className={`text-xs ${stat.change && stat.change.includes('+') ? 'text-green-500' : stat.change && stat.change.includes('-') ? 'text-red-500' : ''}`}>
+                    {stat.change ? `${stat.change} from last month` : ''}
                   </p>
                 </CardContent>
               </Card>
@@ -333,19 +403,19 @@ const AdminDashboard = () => {
                         <div className="space-y-2">
                           <div className="flex justify-between">
                             <span>Active Jobs</span>
-                            <span className="font-medium">87</span>
+                            <span className="font-medium">{jobStats.activeJobs}</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Positions Available</span>
-                            <span className="font-medium">213</span>
+                            <span className="font-medium">{jobStats.positionsAvailable}</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Positions Filled</span>
-                            <span className="font-medium">156</span>
+                            <span className="font-medium">{jobStats.positionsFilled}</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Average Hourly Rate</span>
-                            <span className="font-medium">$12.75</span>
+                            <span className="font-medium">${jobStats.avgHourlyRate}</span>
                           </div>
                         </div>
                       </CardContent>
@@ -363,22 +433,16 @@ const AdminDashboard = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span>Food & Beverage</span>
-                            <span className="font-medium">32 jobs</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Event Staff</span>
-                            <span className="font-medium">24 jobs</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Retail</span>
-                            <span className="font-medium">18 jobs</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Delivery</span>
-                            <span className="font-medium">13 jobs</span>
-                          </div>
+                          {jobStats.categories && jobStats.categories.length > 0 ? (
+                            jobStats.categories.map(cat => (
+                              <div key={cat.name} className="flex justify-between">
+                                <span>{cat.name}</span>
+                                <span className="font-medium">{cat.count} jobs</span>
+                              </div>
+                            ))
+                          ) : (
+                            <span className="text-gray-500 text-sm">No data</span>
+                          )}
                         </div>
                       </CardContent>
                       <CardFooter>

@@ -1,10 +1,11 @@
-
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import { Input } from "@/components/ui/input";
-import { Check, Loader } from "lucide-react";
+import { Check, Loader, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 const SignUpPage = () => {
   // Get role from URL query parameter
@@ -20,6 +21,7 @@ const SignUpPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,18 +29,50 @@ const SignUpPage = () => {
     setIsLoading(true);
     setError("");
     
-    // Simulate signup API call
     try {
-      // In a real app, this would call Supabase auth
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // If signup successful
+      // 1. Đăng ký user qua Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (authError) throw authError;
+      // 2. Lấy user_id vừa tạo từ auth
+      const userId = authData.user?.id;
+      // 3. Insert vào bảng users
+      const { error: userInsertError } = await supabase
+        .from("users")
+        .insert([
+          {
+            id: userId, // đồng bộ id với auth
+            email,
+            full_name: name,
+            phone,
+            role,
+          },
+        ]);
+      if (userInsertError) throw userInsertError;
+      // 4. Nếu là employer, tạo thêm bản ghi trong employers
+      if (role === "employer" && userId) {
+        const { error: empInsertError } = await supabase
+          .from("employers")
+          .insert([
+            {
+              user_id: userId,
+              company_name: name,
+              company_description: "",
+              city: "",
+              district: "",
+              address: "",
+            },
+          ]);
+        if (empInsertError) throw empInsertError;
+      }
       setShowSuccess(true);
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/login");
       }, 1500);
-    } catch (err) {
-      setError("Registration failed. Please try again.");
+    } catch (err: any) {
+      setError(err.message || "Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +86,7 @@ const SignUpPage = () => {
           {showSuccess && (
             <div className="bg-success-100 border border-success-200 text-success-800 rounded-md p-4 mb-6 flex items-center animate-fade-in">
               <Check className="w-5 h-5 mr-3 text-success-600" />
-              <span>Registration successful! Redirecting to dashboard...</span>
+              <span>Registration successful! Redirecting to login...</span>
             </div>
           )}
           
@@ -155,16 +189,27 @@ const SignUpPage = () => {
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                     Password
                   </label>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-brand-500 focus:border-brand-500"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      autoComplete="new-password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 pr-10"
+                    />
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                      onClick={() => setShowPassword((v) => !v)}
+                      aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                 </div>
               </div>
 

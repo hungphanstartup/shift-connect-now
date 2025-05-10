@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,6 +24,7 @@ import WorkerAvailability from "./pages/Dashboard/WorkerAvailability";
 import JobApplications from "./pages/Dashboard/JobApplications";
 import WorkerProfile from "./pages/Dashboard/WorkerProfile";
 import FindWorkers from "./pages/Dashboard/FindWorkers";
+import EmployerProfile from "./pages/Dashboard/EmployerProfile";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +58,7 @@ const App = () => (
           <Route path="/dashboard/availability" element={<WorkerAvailability />} />
           <Route path="/dashboard/applications" element={<JobApplications />} />
           <Route path="/dashboard/profile" element={<WorkerProfile />} />
+          <Route path="/dashboard/employer/profile" element={<EmployerProfile />} />
           
           {/* New route for finding available workers */}
           <Route path="/dashboard/find-workers" element={<FindWorkers />} />

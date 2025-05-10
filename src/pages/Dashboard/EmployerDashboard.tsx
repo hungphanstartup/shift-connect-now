@@ -9,7 +9,7 @@ const activeJobs = [
   {
     id: 1,
     title: "Restaurant Server",
-    location: "District 1, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Quận 1", address: "" },
     date: "May 10, 2025",
     time: "6:00 PM - 10:00 PM",
     applicants: 4,
@@ -20,7 +20,7 @@ const activeJobs = [
   {
     id: 2,
     title: "Event Staff",
-    location: "District 7, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Quận 7", address: "" },
     date: "May 15, 2025",
     time: "3:00 PM - 9:00 PM",
     applicants: 6,
@@ -34,7 +34,7 @@ const pastJobs = [
   {
     id: 3,
     title: "Office Assistant",
-    location: "District 1, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Quận 1", address: "" },
     date: "May 5, 2025",
     time: "9:00 AM - 5:00 PM",
     positions: 1,
@@ -44,7 +44,7 @@ const pastJobs = [
   {
     id: 4,
     title: "Warehouse Helper",
-    location: "Thu Duc City, Ho Chi Minh City",
+    location: { city: "Hồ Chí Minh", district: "Thủ Đức", address: "" },
     date: "April 25, 2025",
     time: "8:00 AM - 4:00 PM",
     positions: 3,
@@ -104,22 +104,22 @@ const EmployerDashboard = () => {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center">
               <div className="mb-4 md:mb-0">
-                <h1 className="text-2xl font-bold mb-1">Welcome back, {employer.name}!</h1>
+                <h1 className="text-2xl font-bold mb-1">Chào mừng trở lại, {employer.name}!</h1>
                 <div className="flex items-center">
                   <div className="flex items-center mr-4">
                     <Briefcase className="w-4 h-4 text-brand-600 mr-1" />
-                    <span className="text-gray-700">{employer.jobsPosted} Jobs Posted</span>
+                    <span className="text-gray-700">{employer.jobsPosted} Công việc đã đăng</span>
                   </div>
                   <div className="flex items-center">
                     <Calendar className="w-4 h-4 text-brand-600 mr-1" />
-                    <span className="text-gray-700">{employer.activeJobs} Active Jobs</span>
+                    <span className="text-gray-700">{employer.activeJobs} Công việc đang tuyển</span>
                   </div>
                 </div>
               </div>
               <Link to="/dashboard/post-job">
                 <Button className="flex items-center gap-2">
                   <Plus size={16} />
-                  Post New Job
+                  Đăng việc mới
                 </Button>
               </Link>
             </div>
@@ -131,7 +131,7 @@ const EmployerDashboard = () => {
               <Button variant="outline" className="w-full bg-white border-gray-200 hover:bg-gray-50 h-auto py-4 shadow-sm">
                 <div className="flex flex-col items-center">
                   <Plus className="w-5 h-5 mb-2 text-brand-600" />
-                  <span>Post New Job</span>
+                  <span>Đăng việc mới</span>
                 </div>
               </Button>
             </Link>
@@ -139,7 +139,7 @@ const EmployerDashboard = () => {
               <Button variant="outline" className="w-full bg-white border-gray-200 hover:bg-gray-50 h-auto py-4 shadow-sm">
                 <div className="flex flex-col items-center">
                   <Briefcase className="w-5 h-5 mb-2 text-brand-600" />
-                  <span>Manage Jobs</span>
+                  <span>Quản lý việc làm</span>
                 </div>
               </Button>
             </Link>
@@ -147,15 +147,15 @@ const EmployerDashboard = () => {
               <Button variant="outline" className="w-full bg-white border-gray-200 hover:bg-gray-50 h-auto py-4 shadow-sm">
                 <div className="flex flex-col items-center">
                   <Users className="w-5 h-5 mb-2 text-brand-600" />
-                  <span>View Workers</span>
+                  <span>Xem người lao động</span>
                 </div>
               </Button>
             </Link>
-            <Link to="/dashboard/profile">
+            <Link to="/dashboard/employer/profile">
               <Button variant="outline" className="w-full bg-white border-gray-200 hover:bg-gray-50 h-auto py-4 shadow-sm">
                 <div className="flex flex-col items-center">
                   <User className="w-5 h-5 mb-2 text-brand-600" />
-                  <span>Edit Profile</span>
+                  <span>Chỉnh sửa hồ sơ</span>
                 </div>
               </Button>
             </Link>
@@ -230,13 +230,13 @@ const EmployerDashboard = () => {
                                   </div>
                                   <div className="flex items-center text-gray-500 text-sm">
                                     <MapPin size={15} className="mr-2" />
-                                    <span>{job.location}</span>
+                                    <span>{job.location.district}, {job.location.city}, {job.location.address}</span>
                                   </div>
                                 </div>
                                 
                                 <div className="mt-3 flex flex-wrap gap-2">
-                                  <span className="bg-gray-100 text-gray-600 text-xs font-medium py-1 px-2 rounded">
-                                    ${job.hourlyRate}/hour
+                                  <span className="text-sm text-gray-600">
+                                    {job.hourlyRate.toLocaleString()} VNĐ/giờ
                                   </span>
                                   <span className="bg-brand-100 text-brand-700 text-xs font-medium py-1 px-2 rounded">
                                     {job.filled}/{job.positions} positions filled
@@ -297,7 +297,7 @@ const EmployerDashboard = () => {
                                   <td className="px-6 py-4">
                                     <div className="flex flex-col">
                                       <span className="font-medium text-gray-900">{job.title}</span>
-                                      <span className="text-gray-500 text-sm">{job.location}</span>
+                                      <span className="text-gray-500 text-sm">{job.location.district}, {job.location.city}, {job.location.address}</span>
                                     </div>
                                   </td>
                                   <td className="px-6 py-4 text-sm text-gray-500">
@@ -341,7 +341,7 @@ const EmployerDashboard = () => {
               {selectedJob && activeTab === "jobs" && (
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                   <div className="border-b border-gray-200 p-4">
-                    <h2 className="text-lg font-semibold">Applicants for {activeJobs.find(j => j.id === selectedJob)?.title}</h2>
+                    <h2 className="text-lg font-semibold">Ứng viên cho {activeJobs.find(j => j.id === selectedJob)?.title}</h2>
                     <p className="text-sm text-gray-500 mt-1">
                       {activeJobs.find(j => j.id === selectedJob)?.date} • {activeJobs.find(j => j.id === selectedJob)?.time}
                     </p>
@@ -369,15 +369,15 @@ const EmployerDashboard = () => {
                                 {applicant.status === "confirmed" ? (
                                   <span className="bg-green-50 text-green-700 text-xs font-medium rounded px-2 py-1 flex items-center">
                                     <Check size={14} className="mr-1" />
-                                    Confirmed
+                                    Đã xác nhận
                                   </span>
                                 ) : (
                                   <div className="flex gap-2">
                                     <Button size="sm" variant="outline" className="text-xs py-0 px-2 h-7 border-red-200 hover:bg-red-50 text-red-600">
-                                      Decline
+                                      Từ chối
                                     </Button>
                                     <Button size="sm" className="text-xs py-0 px-2 h-7 bg-green-600 hover:bg-green-700">
-                                      Confirm
+                                      Xác nhận
                                     </Button>
                                   </div>
                                 )}
@@ -390,7 +390,7 @@ const EmployerDashboard = () => {
                                   <Button size="sm" variant="outline">View Profile</Button>
                                 </Link>
                                 <Button size="sm" variant="outline" className="text-xs py-0 px-2 h-7 border-red-200 hover:bg-red-50 text-red-600">
-                                  Cancel Confirmation
+                                  Hủy xác nhận
                                 </Button>
                               </div>
                             )}
@@ -400,7 +400,7 @@ const EmployerDashboard = () => {
                         {/* View All Link */}
                         <div className="pt-2 text-center">
                           <Link to={`/dashboard/jobs/${selectedJob}/applicants`} className="text-brand-600 text-sm hover:underline">
-                            View all applicants
+                            Xem tất cả ứng viên
                           </Link>
                         </div>
                       </div>

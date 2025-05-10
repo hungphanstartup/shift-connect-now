@@ -1,11 +1,12 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import { Input } from "@/components/ui/input";
-import { Check, Loader } from "lucide-react";
+import { Check, Loader, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
+import { demoAccounts } from "../../mock/authMockData";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -13,67 +14,61 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  // Hàm đăng nhập thực tế với Supabase
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    
-    // Simulate login API call
     try {
-      // In a real app, this would call Supabase auth
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Check for demo accounts
-      let redirectUrl = "/dashboard";
-      let role = "worker";
-      
-      if (email === "worker@example.com" && password === "password") {
-        redirectUrl = "/dashboard?role=worker";
-        role = "worker";
-      } else if (email === "employer@example.com" && password === "password") {
-        redirectUrl = "/dashboard?role=employer";
-        role = "employer";
-      } else if (email === "admin@example.com" && password === "password") {
-        redirectUrl = "/dashboard?role=admin";
-        role = "admin";
-      } else {
-        // If not a demo account, use the worker dashboard by default
-        redirectUrl = "/dashboard?role=worker";
-        role = "worker";
-      }
-      
-      // Store authentication state in localStorage
+      // Đăng nhập với Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (authError) throw authError;
+      // Lấy user_id từ bảng users
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('id, role')
+        .eq('email', email)
+        .single();
+      if (!userData || !userData.id) throw new Error("Không tìm thấy user");
+      localStorage.setItem("user_id", userData.id);
       localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userRole", role);
-      
-      // If login successful
+      localStorage.setItem("userRole", userData.role);
+      // Nếu là employer, lấy thêm employer_id
+      if (userData.role === "employer") {
+        const { data: empData } = await supabase
+          .from('employers')
+          .select('id')
+          .eq('user_id', userData.id)
+          .single();
+        if (empData && empData.id) {
+          localStorage.setItem("employer_id", empData.id);
+        }
+      }
       setShowSuccess(true);
       setTimeout(() => {
-        navigate(redirectUrl);
+        navigate(`/dashboard?role=${userData.role}`);
       }, 1000);
-    } catch (err) {
-      setError("Login failed. Please check your credentials and try again.");
+    } catch (err: any) {
+      setError(err.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Hàm điền nhanh demo account
   const loginAsDemoAccount = (role: string) => {
-    let demoEmail = "";
-    
-    if (role === "worker") {
-      demoEmail = "worker@example.com";
-    } else if (role === "employer") {
-      demoEmail = "employer@example.com";
-    } else if (role === "admin") {
-      demoEmail = "admin@example.com";
+    const demo = demoAccounts[role];
+    if (demo) {
+      setEmail(demo.email);
+      setPassword(demo.password);
+      toast.success(`Demo credentials filled for ${role} account`);
     }
-    
-    setEmail(demoEmail);
-    setPassword("password");
-    toast.success(`Demo credentials filled for ${role} account`);
   };
 
   return (
@@ -87,29 +82,26 @@ const LoginPage = () => {
               <span>Login successful! Redirecting to dashboard...</span>
             </div>
           )}
-          
           {/* Error message */}
           {error && (
             <div className="bg-red-100 border border-red-200 text-red-800 rounded-md p-4 mb-6">
               {error}
             </div>
           )}
-          
           <div className="text-center">
-            <h2 className="mt-6 text-3xl font-bold text-gray-900">Sign in to your account</h2>
+            <h2 className="mt-6 text-3xl font-bold text-gray-900">Đăng nhập vào tài khoản</h2>
             <p className="mt-2 text-sm text-gray-600">
               Or{" "}
               <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-500">
-                create a new account
+                tạo tài khoản mới
               </Link>
             </p>
           </div>
-          
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm space-y-4">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email address
+                  Địa chỉ email
                 </label>
                 <Input
                   id="email"
@@ -122,24 +114,33 @@ const LoginPage = () => {
                   className="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-brand-500 focus:border-brand-500"
                 />
               </div>
-              
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
+                  Mật khẩu
                 </label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-brand-500 focus:border-brand-500"
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 pr-10"
+                  />
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    onClick={() => setShowPassword((v) => !v)}
+                    aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
             </div>
-
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
@@ -149,17 +150,15 @@ const LoginPage = () => {
                   className="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
+                  Ghi nhớ đăng nhập
                 </label>
               </div>
-
               <div className="text-sm">
                 <Link to="/forgot-password" className="font-medium text-brand-600 hover:text-brand-500">
-                  Forgot your password?
+                  Quên mật khẩu?
                 </Link>
               </div>
             </div>
-
             <Button
               type="submit"
               className="group relative w-full"
@@ -168,18 +167,17 @@ const LoginPage = () => {
               {isLoading ? (
                 <span className="flex items-center justify-center">
                   <Loader className="animate-spin -ml-1 mr-2 h-4 w-4" />
-                  Signing in...
+                  Đăng nhập...
                 </span>
               ) : (
-                <span>Sign in</span>
+                <span>Đăng nhập</span>
               )}
             </Button>
           </form>
-          
           {/* Demo accounts section */}
           <div className="mt-6 border-t border-gray-200 pt-4">
             <h3 className="text-center text-sm font-medium text-gray-700 mb-4">
-              Demo Accounts
+              Tài khoản demo
             </h3>
             <div className="grid grid-cols-3 gap-2">
               <Button 
@@ -187,28 +185,27 @@ const LoginPage = () => {
                 size="sm"
                 onClick={() => loginAsDemoAccount("worker")}
               >
-                Worker Demo
+                Demo Người lao động
               </Button>
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => loginAsDemoAccount("employer")}
               >
-                Employer Demo
+                Demo Nhà tuyển dụng
               </Button>
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => loginAsDemoAccount("admin")}
               >
-                Admin Demo
+                Demo Quản trị viên
               </Button>
             </div>
             <div className="text-xs text-center mt-2 text-gray-500">
               Click any button above to fill login credentials for the demo account
             </div>
           </div>
-          
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -218,7 +215,6 @@ const LoginPage = () => {
                 <span className="px-2 bg-gray-50 text-gray-500">Or continue with</span>
               </div>
             </div>
-
             <div className="mt-6 grid grid-cols-2 gap-3">
               <Button
                 variant="outline"
@@ -235,7 +231,6 @@ const LoginPage = () => {
                 </svg>
                 Google
               </Button>
-              
               <Button
                 variant="outline"
                 className="w-full"

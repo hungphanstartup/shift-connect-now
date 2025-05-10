@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
@@ -13,10 +12,10 @@ const HomePage = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-slide-in">
               <h1 className="text-4xl md:text-5xl font-bold text-brand-900 leading-tight">
-                Find Temporary Jobs.<br />Fill Temporary Positions.
+                Tìm việc làm tạm thời.<br />Điền vào vị trí tạm thời.
               </h1>
               <p className="text-lg text-gray-600 md:pr-12">
-                Connect workers and employers for temporary job opportunities. Quick, reliable, and flexible.
+                Kết nối người lao động và nhà tuyển dụng cho các cơ hội việc làm tạm thời. Nhanh, đáng tin cậy và linh hoạt.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/signup?role=worker">
@@ -185,7 +184,7 @@ const HomePage = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <p className="font-semibold text-lg">$12/hour</p>
+                <p className="font-semibold text-lg">12.000 VNĐ/giờ</p>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
                 <span className="text-sm text-gray-500">Posted 1 day ago</span>
@@ -220,7 +219,7 @@ const HomePage = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <p className="font-semibold text-lg">$10/hour</p>
+                <p className="font-semibold text-lg">10.000 VNĐ/giờ</p>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
                 <span className="text-sm text-gray-500">Posted 2 days ago</span>
@@ -255,7 +254,7 @@ const HomePage = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <p className="font-semibold text-lg">$15/hour</p>
+                <p className="font-semibold text-lg">15.000 VNĐ/giờ</p>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
                 <span className="text-sm text-gray-500">Posted 3 days ago</span>
@@ -271,16 +270,16 @@ const HomePage = () => {
       {/* Call to Action */}
       <section className="py-16 bg-brand-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+          <h2 className="text-3xl font-bold mb-6">Sẵn sàng bắt đầu?</h2>
           <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-            Join thousands of workers and employers already using our platform for temporary job opportunities.
+            Tham gia cùng hàng ngàn người lao động và nhà tuyển dụng đã sử dụng nền tảng của chúng tôi cho các cơ hội việc làm thời vụ.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/signup?role=worker">
-              <Button size="lg" variant="secondary" className="w-full sm:w-auto">Find Work</Button>
+              <Button size="lg" variant="secondary" className="w-full sm:w-auto">Tìm việc ngay</Button>
             </Link>
             <Link to="/signup?role=employer">
-              <Button size="lg" variant="outline" className="bg-transparent border-white hover:bg-white hover:text-brand-600 w-full sm:w-auto">Post a Job</Button>
+              <Button size="lg" variant="outline" className="bg-transparent border-white hover:bg-white hover:text-brand-600 w-full sm:w-auto">Đăng tin tuyển dụng</Button>
             </Link>
           </div>
         </div>
